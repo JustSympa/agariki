@@ -1,671 +1,393 @@
 # Agariki
 
-**A demand mapping and distribution optimization platform for the fungus sector in Cameroon**
+**A privacy-focused location intelligence platform connecting fungus producers and consumers in Cameroon**
+
+[![Next.js](https://img.shields.io/badge/Next.js-14+-black?style=flat-square&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+[![Supabase](https://img.shields.io/badge/Supabase-Backend-green?style=flat-square&logo=supabase)](https://supabase.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+
+The project is deployed in the link below
+https://agariki.vercel.com
+
+For the demonstration follow the link below
+https://drive.google.com/file/d/1Hko3je7Q2u3cRAGs1cnA1l6viYvXGsl5/view?usp=sharing
 
 ## Table of Contents
 
 - [Overview](#overview)
+- [Academic Context](#academic-context)
 - [Problem Statement](#problem-statement)
 - [Solution](#solution)
-- [Key Features](#key-features)
+  - [For Consumers](#for-consumers)
+  - [For Producers](#for-producers)
+  - [For the Market](#for-the-market)
+- [Cloud Integration](#cloud-integration)
+- [Core Concepts](#core-concepts)
+  - [User Types](#user-types)
+  - [Points of Activity (PoA)](#points-of-activity-poa)
+  - [Privacy-First Design](#privacy-first-design)
+  - [Role-Based Heatmap](#role-based-heatmap)
+  - [In-App Chat System](#in-app-chat-system)
+- [Application Flow](#application-flow)
 - [Technology Stack](#technology-stack)
-- [System Architecture](#system-architecture)
+  - [Frontend](#frontend)
+  - [Backend](#backend)
+  - [Development Tools](#development-tools)
+  - [Deployment](#deployment)
+- [Design System](#design-system)
 - [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-  - [Environment Variables](#environment-variables)
-  - [Running the Application](#running-the-application)
-- [Project Structure](#project-structure)
-- [Database Schema](#database-schema)
-- [User Roles and Workflows](#user-roles-and-workflows)
-  - [Consumer Workflow](#consumer-workflow)
-  - [Producer Workflow](#producer-workflow)
-- [Core Functionalities](#core-functionalities)
-  - [Demand Registration](#demand-registration)
-  - [Demand Mapping and Visualization](#demand-mapping-and-visualization)
-  - [Distribution Circuit Planning](#distribution-circuit-planning)
-  - [Producer Dashboard](#producer-dashboard)
-- [API Routes](#api-routes)
-- [Authentication and Authorization](#authentication-and-authorization)
-- [Deployment](#deployment)
-  - [Vercel Deployment](#vercel-deployment)
-  - [Supabase Setup](#supabase-setup)
-- [Development Guidelines](#development-guidelines)
-  - [Code Style](#code-style)
-  - [Git Workflow](#git-workflow)
-  - [Testing](#testing)
 - [Contributing](#contributing)
-- [Roadmap](#roadmap)
 - [License](#license)
-- [Contact and Support](#contact-and-support)
 
 ## Overview
 
-Agariki is a specialized web application designed to bridge the information gap in Cameroon's fungus sector. The platform serves as a centralized information hub that connects fungus consumers with producers by enabling demand registration and providing producers with visual demand mapping tools to optimize their distribution strategies.
+Agariki is a location-based intelligence platform designed to solve critical information asymmetry in Cameroon's fungus sector. The platform connects fungus producers with consumers through interactive heatmaps and secure communication channels, enabling efficient market discovery while protecting user privacy.
 
-The name "Agariki" is derived from the scientific classification of mushrooms (Agaricus), reflecting our focus on the fungus industry while maintaining a memorable and culturally relevant identity for the Cameroonian market.
+The name "Agariki" derives from the scientific classification of mushrooms (Agaricus), reflecting our focus on the fungal industry while maintaining cultural relevance for the Cameroonian market.
+
+## Academic Context
+
+This project is developed as part of the **Wide Area Networks** course curriculum, demonstrating practical applications of cloud computing, distributed systems architecture, and real-time communication protocols. The project showcases:
+
+- **Cloud-Native Architecture**: Serverless deployment leveraging modern cloud infrastructure (Vercel + Supabase)
+- **Distributed Systems**: Implementing edge computing with geographic data distribution
+- **Real-Time Communication**: WebSocket-based messaging system for instant user interaction
+- **Geospatial Computing**: Location-based queries, heatmap generation, and spatial data processing
+- **Security Engineering**: Authentication, authorization, and privacy-preserving design patterns **(nb: For the moment the design is secure but not the implementation)**
+- **Database Design**: Relational data modeling with PostgreSQL and Row Level Security policies
+
+The application addresses a real-world problem in Cameroon's agricultural technology sector, bridging theoretical networking concepts with practical cloud application development.
 
 ## Problem Statement
 
-Cameroon's fungus sector faces a critical challenge: demand significantly exceeds supply, yet there is no centralized mechanism for producers to understand where demand is concentrated. This information asymmetry leads to several issues:
+Cameroon's fungus sector faces a fundamental information challenge where demand consistently exceeds supply, yet no centralized mechanism exists for market participants to discover each other. This creates cascading inefficiencies across the value chain.
 
-1. **Inefficient Distribution**: Producers lack visibility into demand hotspots, resulting in suboptimal distribution routes and wasted resources
-2. **Unmet Consumer Demand**: Consumers in high-demand areas struggle to access fungus products consistently
-3. **Market Fragmentation**: Without a unified platform, both consumers and producers operate in silos, leading to market inefficiencies
-4. **Lost Revenue Opportunities**: Producers miss opportunities to expand into underserved markets due to lack of demand data
-5. **Supply Chain Gaps**: The absence of demand mapping prevents effective supply chain planning and inventory management
+### For Producers
 
-These challenges stem from a fundamental lack of information infrastructure in the sector, not from a lack of interest or market potential.
+Producers operate without market visibility, leading to:
+
+- **Inefficient Distribution**: No insight into demand concentration areas results in suboptimal routing and wasted resources
+- **Missed Opportunities**: Inability to identify underserved high-demand markets limits revenue growth
+- **Poor Capacity Planning**: Without demand signals, producers risk overproduction in low-demand areas while missing high-demand zones
+- **Market Fragmentation**: Isolated from consumers, producers rely on inefficient informal networks
+
+### For Consumers
+
+Consumers struggle to locate reliable suppliers, resulting in:
+
+- **Supply Uncertainty**: Difficulty finding consistent fungus sources in their vicinity
+- **Information Search Costs**: Time and resources wasted navigating informal supply networks
+- **Limited Options**: Lack of visibility into multiple supplier locations and capacities
+- **Communication Barriers**: No safe mechanism to express demand or communicate with potential suppliers
+
+### Security Concerns
+
+Both parties face security risks in traditional direct contact methods:
+
+- **Privacy Exposure**: Sharing phone numbers and addresses publicly creates vulnerability to fraud, theft, and harassment
+- **No Vetting Mechanism**: Inability to verify legitimacy before establishing direct communication
+- **Trust Deficit**: Lack of progressive trust-building creates high barriers to market entry
 
 ## Solution
 
-Agariki addresses these challenges by providing a simple yet powerful platform that:
+Agariki addresses these challenges through a three-pillar approach: location intelligence, privacy-centric design, and secure communication.
 
-- **For Consumers**: Enables easy registration of fungus demand, including preferred types, quantities, and locations
-- **For Producers**: Provides comprehensive demand mapping and visualization tools to identify high-demand zones
-- **For the Sector**: Creates a centralized information repository that brings transparency and efficiency to the fungus market
+### For Consumers
 
-The platform focuses exclusively on information aggregation and visualization—it is not an e-commerce platform, educational resource, or marketplace. Its singular purpose is to create transparency around demand patterns to enable better distribution planning.
+Agariki empowers consumers to:
 
-## Key Features
+- **Discover Producers**: View interactive heatmap showing producer locations and production capacity across regions
+- **Assess Supply**: Identify high-density producer areas for reliable sourcing options
+- **Express Demand**: Create Points of Delivery (PoD) indicating where they need fungus products and in what quantities
+- **Communicate Safely**: Initiate conversations with producers through in-app chat without exposing personal contact information
+- **Build Trust**: Verify producer legitimacy through dialogue before exchanging sensitive details
+- **Manage Multiple Locations**: Create PoDs for different delivery points (home, business, etc.)
 
-### Consumer-Facing Features
-- **Demand Registration Form**: Simple, intuitive interface for consumers to register their fungus demand
-- **Location Specification**: GPS-based or manual location entry to ensure accurate demand mapping
-- **Quantity and Type Selection**: Specify fungus varieties and desired quantities
-- **Demand History**: View past demand registrations for personal tracking
+### For Producers
 
-### Producer-Facing Features
-- **Interactive Demand Map**: Visual representation of demand concentration across regions
-- **Demand Analytics Dashboard**: Aggregate statistics on demand patterns, trends, and growth
-- **High-Demand Zone Identification**: Algorithmic identification of areas with concentrated demand
-- **Distribution Circuit Planner**: Tools to plan optimized delivery routes based on demand density
-- **Demand Filtering**: Filter demand data by fungus type, quantity, date range, and location
-- **Export Capabilities**: Download demand data and maps for offline analysis
+Agariki enables producers to:
 
-### Administrative Features
-- **User Management**: Basic authentication and role-based access control
-- **Data Validation**: Ensures quality and accuracy of demand registrations
-- **Platform Analytics**: Monitor platform usage and adoption metrics
+- **Visualize Demand**: Access heatmap displaying consumer demand density and concentration areas
+- **Identify High-Value Markets**: Quickly spot neighborhoods and regions with strong fungus demand
+- **Optimize Distribution**: Plan efficient routes through high-demand zones to maximize coverage and minimize costs
+- **Assess Capacity Needs**: View aggregate demand in target areas to inform production planning
+- **Respond to Inquiries**: Engage with interested consumers through secure chat channels
+- **Establish Presence**: Create Points of Presence (PoP) showing production locations and capacities
+- **Expand Strategically**: Use demand data to guide market expansion decisions
+
+### For the Market
+
+Agariki creates systemic benefits:
+
+- **Information Transparency**: Centralized platform aggregating supply and demand signals
+- **Reduced Transaction Costs**: Eliminates time and resources spent on information search
+- **Market Efficiency**: Better matching between supply and demand reduces waste
+- **Trust Infrastructure**: Progressive disclosure model lowers barriers to legitimate transactions
+- **Data Foundation**: Aggregate market intelligence (future analytics and forecasting)
+
+## Cloud Integration
+As the assignment is to "Use Cloud to solve a real life problem", **The Cloud is at the center of the deployment for this app**.
+It is a monolith app deployed on the fully managed **Vercel Cloud Infrasctructure** and use **Supabase** for the backend.
+Hence, the application uses 2 core concepts of Cloud Computing:
+- **IaaS**: Cloud Infrastructures managed by Vercel and Supabase
+- **PaaS**: **Severless platform** for the Next.JS app by Vercel and **Supabase Postgres** for the database by Supabase.
+**nb**: It is interesting to note that Supabase is generally described as a **Backend as a Service** since it provides Database, Authentication, Storage and Edge Functions services at once.
+
+## Core Concepts
+
+### User Types
+
+Agariki supports two distinct user types stored in the `user_type` database column:
+
+**Consumers**: Individuals or businesses seeking fungus products. They create Points of Delivery (PoD) and view producer locations.
+
+**Producers**: Farmers, cultivators, or distributors of fungus products. They create Points of Presence (PoP) and view demand density.
+
+User type determines interface configuration, heatmap view, and available features upon login.
+
+### Points of Activity (PoA)
+
+Points of Activity represent the unified data structure for both producer locations and consumer delivery points. Despite serving different purposes, PoPs and PoDs share identical schema, stored in a single `points_of_activity` table.
+
+**Structure:**
+- **GPS Coordinates**: Latitude and longitude marking the activity location
+- **Location Name**: Human-readable identifier (e.g., "Near Pharmacie Central")
+- **Fresh Capacity**: Quantity in kilograms for fresh fungus (production or demand)
+- **Dry Capacity**: Quantity in kilograms for dry fungus (production or demand)
+- **Description**: Optional additional context
+- **Active Status**: Whether the PoA is currently relevant
+
+**Key Characteristics:**
+- User association via `user_id` foreign key
+- Semantic interpretation based on associated user type (consumer = demand, producer = supply)
+- Multiple PoAs per user for different locations
+- Soft-delete capability through `is_active` flag
+
+### Privacy-First Design
+
+Agariki protects user privacy through strategic information hiding and progressive disclosure:
+
+**Public Landmark Strategy**: Users are encouraged to use nearby public landmarks rather than exact private addresses. Examples include "Opposite Hotel Merina," "Carrefour Bastos," or "Near Total Station." This provides sufficient location precision for business purposes while protecting against theft, stalking, or harassment.
+
+**Information Hiding**: Phone numbers, email addresses, and other sensitive contact details remain hidden on the heatmap and in PoA details dialogs. Only business-relevant information (location, capacity, description) is publicly visible.
+
+**Progressive Trust Model**: The in-app chat system enables users to communicate, verify legitimacy, and build mutual trust before voluntarily exchanging personal contact information. This "trust-first" approach dramatically reduces fraud risk while enabling legitimate business connections.
+
+### Role-Based Heatmap
+
+The heatmap serves as the primary interface for market discovery, with role-based views ensuring each user type receives actionable intelligence:
+
+**For Producers (View Consumer PoDs)**:
+- Heatmap displays demand density across geographical regions
+- Color gradient indicates concentration levels (red = high demand, yellow = moderate, green = low)
+- Individual markers show specific consumer delivery points
+- Clicking markers reveals demand details (capacity, location name, description)
+- Helps identify target neighborhoods for distribution planning
+
+**For Consumers (View Producer PoPs)**:
+- Heatmap displays supply density and producer concentration
+- Visual representation of where production capacity exists
+- Individual markers indicate specific producer locations
+- Clicking markers shows supply details (production capacity, location)
+- Enables sourcing decisions based on proximity and capacity
+
+**Interaction Patterns**:
+- **Click Marker**: Opens dialog with PoA details and "Start Chat" button
+- **Long-Press Location**: Opens PoA creation dialog with pre-filled coordinates
+- **Zoom/Pan**: Explore different geographical areas and zoom levels
+- **Clustering**: Automatic marker grouping at different zoom levels for performance
+
+### In-App Chat System
+
+The chat system provides secure communication infrastructure that protects users until trust is established:
+
+**Conversation Initiation**: Users start chats by clicking the "Start Chat" button in PoA detail dialogs. The system automatically creates or retrieves existing chat threads between users.
+
+**Privacy Protection**: All communication occurs within the application without exposing phone numbers or email addresses. Users control when and whether to share personal contacts.
+
+**Trust Building**: Through conversation, users can:
+- Verify business legitimacy through detailed questions
+- Assess reliability and professionalism
+- Discuss pricing, quantities, quality expectations
+- Schedule meetings at public locations
+- Exchange personal contacts only when comfortable
+
+**Security Features**:
+- Real-time message delivery via WebSocket connections
+- Persistent message history for reference
+- Block and report functionality for suspicious accounts
+- End-to-end conversation privacy
+
+## Application Flow
+
+### Navigation Structure
+
+**Landing Page (`/`)**: Project presentation explaining Agariki's purpose, features, and usage instructions
+
+**Authentication Routes**:
+- `/auth/signup`: User registration with user type selection
+- `/auth/login`: Authentication for existing users
+- `/auth/forgot-password`: Password reset request
+- `/auth/reset-password`: Password reset completion
+
+**Application Routes** (authenticated):
+- `/map`: Interactive heatmap with PoA markers (primary interface)
+- `/chats`: Chat thread list and conversation view (`/chats/[threadId]` for specific threads)
+- `/settings`: User profile management, PoA management, account settings
+
+**Responsive Navigation**:
+- **Mobile (< 768px)**: Bottom navigation bar with icons for Map, Chats, Settings
+- **Desktop (≥ 768px)**: Collapsible left sidebar with icon/label navigation
+
+### User Journey
+
+**Consumer Flow**:
+1. Register as consumer → Login → Land on map showing producer heatmap
+2. Explore producer locations → Create PoD by long-pressing delivery location
+3. Click producer marker → View details → Start chat
+4. Build trust through conversation → Exchange contacts when ready
+5. Manage PoDs via Settings for multiple delivery points
+
+**Producer Flow**:
+1. Register as producer → Login → Land on map showing demand heatmap
+2. Analyze demand concentration → Create PoP by long-pressing production location
+3. Identify high-demand zones → Plan distribution strategy
+4. Respond to consumer inquiries via chat
+5. Expand PoPs as business grows via Settings
 
 ## Technology Stack
 
-Agariki is built using modern, scalable technologies optimized for rapid development and reliable performance:
-
 ### Frontend
-- **Next.js 14+**: React framework with App Router for server-side rendering and optimal performance
-- **React 18+**: Component-based UI library
-- **TypeScript**: Type-safe development for reduced bugs and better developer experience
-- **Tailwind CSS**: Utility-first CSS framework for responsive design
-- **Leaflet / Mapbox GL JS**: Interactive mapping libraries for demand visualization
-- **Recharts / Chart.js**: Data visualization for analytics dashboards
-- **React Hook Form**: Form state management and validation
-- **Zod**: Schema validation for form inputs and API responses
+
+**Core Framework**:
+- **Next.js 14+**: React framework with App Router for SSR, SSG, and API routes
+- **TypeScript 5.0+**: Type-safe development with strict mode enabled
+- **React 18+**: Component-based UI with concurrent features
+
+**UI & Styling**:
+- **shadcn/ui**: Accessible component library built on Radix UI primitives
+- **Tailwind CSS v4**: Utility-first CSS framework for rapid styling
+- **Lucide React**: Comprehensive icon set with 1000+ consistent icons
+- **Radix UI**: Unstyled, accessible component primitives
+
+**State Management**:
+- **Redux Toolkit**: Predictable state container with simplified API
+- **Redux Persist**: Local storage persistence for offline capability
+- **RTK Query**: Data fetching and caching solution
+
+**Mapping & Geospatial**:
+- **Leaflet** or **Mapbox GL JS**: Interactive map rendering and controls
+- **React Leaflet** or **React Map GL**: React bindings for chosen map library
+- **Leaflet.heat** or **Mapbox Heatmap Layer**: Density visualization
+- **Turf.js**: Geospatial analysis and calculations (distance, clustering, etc.)
 
 ### Backend
-- **Next.js API Routes**: Serverless API endpoints
-- **Supabase**: Backend-as-a-Service providing:
-  - **PostgreSQL Database**: Relational database for structured data
-  - **Authentication**: Built-in auth with social providers and email/password
-  - **Row Level Security (RLS)**: Database-level security policies
-  - **Real-time Subscriptions**: Live data updates for collaborative features
-  - **Storage**: File storage for user uploads (if needed in future)
+
+**Infrastructure (Supabase)**:
+- **Supabase Auth**: Managed JWT-based authentication with email/password
+- **PostgreSQL**: Relational database with PostGIS extension for geospatial queries
+- **Supabase Realtime**: WebSocket-based real-time subscriptions for chat
+- **Supabase Storage**: Object storage for user-uploaded content (profile images)
+- **Row Level Security (RLS)**: Database-level authorization policies
+
+**ORM & Database**:
+- **Drizzle ORM**: Type-safe, performant TypeScript ORM
+- **Drizzle Kit**: Database migration and introspection tools
+
+**API Layer**:
+- **Next.js API Routes**: Serverless functions for backend logic
+- **RESTful Design**: Standard HTTP methods with consistent JSON responses
 
 ### Development Tools
-- **ESLint**: Code linting for consistent code quality
-- **Prettier**: Code formatting
-- **Husky**: Git hooks for pre-commit checks
-- **pnpm / npm / yarn**: Package management
 
-### Deployment & Infrastructure
-- **Vercel**: Frontend and API hosting with automatic deployments
-- **Supabase Cloud**: Managed database and backend services
-- **GitHub Actions**: CI/CD pipeline for automated testing and deployment
+- **ESLint**: Code linting with TypeScript-aware rules
+- **Prettier**: Automated code formatting
+- **Husky**: Git hooks for pre-commit validation
+- **TypeScript Compiler**: Type checking and compilation
+- **pnpm**: Fast, disk-efficient package manager
 
-## System Architecture
+### Deployment
 
-Agariki follows a modern, serverless architecture pattern:
+**Frontend & API**:
+- **Vercel**: Edge network deployment with automatic CI/CD from GitHub
+- **Vercel Edge Functions**: Globally distributed API routes for low latency
+- **Automatic Previews**: Unique URLs for pull requests and branches
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                     Client Browser                       │
-│                    (Next.js Frontend)                    │
-└─────────────────────┬───────────────────────────────────┘
-                      │
-                      │ HTTPS
-                      │
-┌─────────────────────▼───────────────────────────────────┐
-│                  Vercel Edge Network                     │
-│              (Static Assets + SSR/SSG)                   │
-└─────────────────────┬───────────────────────────────────┘
-                      │
-                      │ API Calls
-                      │
-┌─────────────────────▼───────────────────────────────────┐
-│              Next.js API Routes (Serverless)             │
-│            (Business Logic + Data Processing)            │
-└─────────────────────┬───────────────────────────────────┘
-                      │
-                      │ REST / GraphQL
-                      │
-┌─────────────────────▼───────────────────────────────────┐
-│                    Supabase Backend                      │
-│  ┌──────────────────────────────────────────────────┐   │
-│  │          PostgreSQL Database                     │   │
-│  │  - Users Table                                   │   │
-│  │  - Demands Table                                 │   │
-│  │  - Producers Table                               │   │
-│  │  - Distribution_Circuits Table                   │   │
-│  └──────────────────────────────────────────────────┘   │
-│  ┌──────────────────────────────────────────────────┐   │
-│  │          Authentication Service                  │   │
-│  └──────────────────────────────────────────────────┘   │
-│  ┌──────────────────────────────────────────────────┐   │
-│  │          Real-time Subscriptions                 │   │
-│  └──────────────────────────────────────────────────┘   │
-└──────────────────────────────────────────────────────────┘
-```
+**Backend Services**:
+- **Supabase Cloud**: Fully managed PostgreSQL, Auth, Realtime, and Storage
+- **Automatic Scaling**: Serverless infrastructure scales with demand
+- **Geographic Distribution**: Data replication for global performance
 
-**Data Flow:**
+## Design System
 
-1. User interacts with Next.js frontend
-2. Frontend makes authenticated requests to Next.js API routes
-3. API routes validate requests and interact with Supabase
-4. Supabase applies Row Level Security policies
-5. Database operations are performed
-6. Response data flows back through the stack to the client
+### Color Palette
+
+Agariki uses a minimal, focused three-color palette:
+
+- **White (`#FFFFFF`)**: Primary background color for clean, spacious interfaces
+- **Black (`#000000`)**: Foreground color for text, icons, and UI elements
+- **Accent (`#C6613F`)**: Brand color for CTAs, highlights, active states, and high-density heatmap areas
+
+**Derived Colors**:
+- Light gray (`#F5F5F5`): Secondary backgrounds and muted elements
+- Border gray (`#E5E5E5`): Dividers and input borders
+- Accent hover (`#A85434`): Darker accent for interactive states
+- Accent light (`#F4E8E4`): Light accent for subtle backgrounds
+
+### Typography & Spacing
+
+- **Font Family**: System font stack for optimal performance and native feel
+- **Spacing Scale**: 4px base unit (4, 8, 12, 16, 24, 32, 48, 64px)
+- **Type Scale**: Clear hierarchy with defined sizes for headings, body, and captions
+
+### Responsive Breakpoints
+
+- **sm**: 640px (mobile landscape)
+- **md**: 768px (tablet)
+- **lg**: 1024px (desktop)
+- **xl**: 1280px (large desktop)
 
 ## Getting Started
 
-### Prerequisites
-
-Before setting up Agariki locally, ensure you have the following installed:
-
-- **Node.js**: Version 18.x or higher
-- **Package Manager**: npm, yarn, or pnpm
-- **Git**: For version control
-- **Supabase Account**: Create a free account at [supabase.com](https://supabase.com)
-- **Code Editor**: VS Code recommended with ESLint and Prettier extensions
-
-### Installation
-
-1. **Clone the repository**
-
-```bash
-git clone https://github.com/yourusername/agariki.git
-cd agariki
-```
-
-2. **Install dependencies**
-
-```bash
-npm install
-# or
-pnpm install
-# or
-yarn install
-```
-
-3. **Set up Supabase**
-
-- Create a new project in your Supabase dashboard
-- Note your project URL and anon key
-- Run the database migrations (see [Database Schema](#database-schema))
-
-### Environment Variables
-
-Create a `.env.local` file in the root directory:
-
-```env
-# Supabase Configuration
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
-
-# Application Configuration
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-
-# Map Configuration (if using Mapbox)
-NEXT_PUBLIC_MAPBOX_TOKEN=your_mapbox_token
-
-# Optional: Analytics
-NEXT_PUBLIC_ANALYTICS_ID=your_analytics_id
-```
-
-**Important**: Never commit `.env.local` to version control. Add it to `.gitignore`.
-
-### Running the Application
-
-**Development Mode:**
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-**Production Build:**
-
-```bash
-npm run build
-npm start
-```
-
-**Linting:**
-
-```bash
-npm run lint
-```
-
-**Type Checking:**
-
-```bash
-npm run type-check
-```
-
-## Project Structure
-
-```
-agariki/
-├── public/                    # Static assets
-│   ├── icons/
-│   ├── images/
-│   └── favicon.ico
-├── src/
-│   ├── app/                   # Next.js App Router
-│   │   ├── (auth)/            # Auth route group
-│   │   │   ├── login/
-│   │   │   └── register/
-│   │   ├── (consumer)/        # Consumer route group
-│   │   │   ├── dashboard/
-│   │   │   └── demand/
-│   │   ├── (producer)/        # Producer route group
-│   │   │   ├── dashboard/
-│   │   │   ├── map/
-│   │   │   └── circuits/
-│   │   ├── api/               # API routes
-│   │   │   ├── demands/
-│   │   │   ├── producers/
-│   │   │   └── auth/
-│   │   ├── layout.tsx         # Root layout
-│   │   └── page.tsx           # Home page
-│   ├── components/            # Reusable components
-│   │   ├── ui/                # Base UI components
-│   │   ├── forms/             # Form components
-│   │   ├── maps/              # Map components
-│   │   └── dashboards/        # Dashboard components
-│   ├── lib/                   # Utility functions
-│   │   ├── supabase/          # Supabase client config
-│   │   ├── utils.ts
-│   │   └── constants.ts
-│   ├── types/                 # TypeScript types
-│   │   ├── database.ts
-│   │   ├── demand.ts
-│   │   └── producer.ts
-│   ├── hooks/                 # Custom React hooks
-│   │   ├── useDemands.ts
-│   │   └── useAuth.ts
-│   └── middleware.ts          # Next.js middleware
-├── supabase/
-│   ├── migrations/            # Database migrations
-│   └── seed.sql               # Seed data
-├── .env.local                 # Environment variables
-├── .eslintrc.json             # ESLint configuration
-├── .gitignore
-├── next.config.js             # Next.js configuration
-├── package.json
-├── tsconfig.json              # TypeScript configuration
-├── tailwind.config.ts         # Tailwind configuration
-└── README.md
-```
-
-## Database Schema
-
-The Agariki database consists of the following core tables:
-
-### Users Table
-
-Managed by Supabase Auth, extended with custom fields:
-
-```sql
-CREATE TABLE users (
-  id UUID PRIMARY KEY REFERENCES auth.users(id),
-  email TEXT UNIQUE NOT NULL,
-  role TEXT NOT NULL CHECK (role IN ('consumer', 'producer', 'admin')),
-  full_name TEXT,
-  phone_number TEXT,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
-```
-
-### Demands Table
-
-Stores consumer demand registrations:
-
-```sql
-CREATE TABLE demands (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  consumer_id UUID REFERENCES users(id) ON DELETE CASCADE,
-  fungus_type TEXT NOT NULL,
-  quantity DECIMAL(10, 2) NOT NULL,
-  unit TEXT NOT NULL,
-  latitude DECIMAL(10, 8) NOT NULL,
-  longitude DECIMAL(11, 8) NOT NULL,
-  location_name TEXT,
-  region TEXT,
-  city TEXT,
-  notes TEXT,
-  status TEXT DEFAULT 'active' CHECK (status IN ('active', 'fulfilled', 'expired')),
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
-
-CREATE INDEX idx_demands_location ON demands(latitude, longitude);
-CREATE INDEX idx_demands_consumer ON demands(consumer_id);
-CREATE INDEX idx_demands_status ON demands(status);
-CREATE INDEX idx_demands_created_at ON demands(created_at);
-```
-
-### Producers Table
-
-Stores producer-specific information:
-
-```sql
-CREATE TABLE producers (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
-  business_name TEXT NOT NULL,
-  production_capacity DECIMAL(10, 2),
-  production_types TEXT[],
-  base_location_lat DECIMAL(10, 8),
-  base_location_lng DECIMAL(11, 8),
-  service_regions TEXT[],
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
-```
-
-### Distribution Circuits Table
-
-Stores planned distribution routes:
-
-```sql
-CREATE TABLE distribution_circuits (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  producer_id UUID REFERENCES producers(id) ON DELETE CASCADE,
-  circuit_name TEXT NOT NULL,
-  route_points JSONB NOT NULL,
-  estimated_demand DECIMAL(10, 2),
-  covered_demands UUID[],
-  status TEXT DEFAULT 'planned' CHECK (status IN ('planned', 'active', 'completed')),
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
-```
-
-### Row Level Security Policies
-
-```sql
--- Consumers can only view and create their own demands
-ALTER TABLE demands ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "Consumers can view own demands"
-  ON demands FOR SELECT
-  USING (auth.uid() = consumer_id);
-
-CREATE POLICY "Consumers can create demands"
-  ON demands FOR INSERT
-  WITH CHECK (auth.uid() = consumer_id);
-
--- Producers can view all active demands
-CREATE POLICY "Producers can view all demands"
-  ON demands FOR SELECT
-  USING (
-    EXISTS (
-      SELECT 1 FROM users
-      WHERE users.id = auth.uid() AND users.role = 'producer'
-    )
-  );
-
--- Producers can manage their own circuits
-ALTER TABLE distribution_circuits ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "Producers manage own circuits"
-  ON distribution_circuits FOR ALL
-  USING (
-    EXISTS (
-      SELECT 1 FROM producers
-      WHERE producers.id = producer_id AND producers.user_id = auth.uid()
-    )
-  );
-```
-
-## User Roles and Workflows
-
-### Consumer Workflow
-
-1. **Registration**: Consumer creates an account with email/password
-2. **Profile Setup**: Provides name, phone number, and default location
-3. **Demand Registration**:
-   - Selects fungus type from predefined list
-   - Specifies quantity and unit
-   - Confirms or adjusts location on map
-   - Adds optional notes about preferences
-   - Submits demand
-4. **Demand Tracking**: Views submitted demands and their status
-5. **Updates**: Modifies or cancels active demands as needed
-
-### Producer Workflow
-
-1. **Registration**: Producer creates account and selects producer role
-2. **Business Profile**: Completes producer-specific information
-3. **Demand Exploration**:
-   - Views interactive map with demand heatmap overlay
-   - Filters demands by type, quantity, location, and date
-   - Analyzes demand concentration patterns
-4. **Circuit Planning**:
-   - Identifies high-demand zones
-   - Creates distribution circuit by selecting demand points
-   - Views route optimization suggestions
-   - Saves circuit for future reference
-5. **Analytics Review**: Monitors demand trends and market opportunities
-
-## Core Functionalities
-
-### Demand Registration
-
-The demand registration system allows consumers to easily communicate their fungus requirements:
-
-- **Form Validation**: Client-side and server-side validation using Zod schemas
-- **Location Services**: Integration with browser Geolocation API and map picker
-- **Fungus Type Selection**: Dropdown with common varieties (oyster, shiitake, button, etc.)
-- **Quantity Input**: Flexible unit selection (kg, pieces, baskets)
-- **Duplicate Prevention**: Warns users if similar demand already exists
-
-### Demand Mapping and Visualization
-
-The core value proposition for producers:
-
-- **Interactive Map**: Pan, zoom, and click on individual demand points
-- **Heatmap Layer**: Visual representation of demand density
-- **Clustering**: Automatic grouping of nearby demands at different zoom levels
-- **Info Windows**: Detailed demand information on marker click
-- **Layer Controls**: Toggle between different visualization modes
-
-### Distribution Circuit Planning
-
-Tools to optimize delivery routes:
-
-- **Route Selection**: Click-to-add demands to circuit
-- **Distance Calculation**: Automatic route distance computation
-- **Demand Aggregation**: Total quantity calculation for circuit
-- **Route Optimization**: Suggest optimal visit order (future enhancement)
-- **Circuit Saving**: Persist circuits for reuse and modification
-
-### Producer Dashboard
-
-Comprehensive analytics and insights:
-
-- **Demand Statistics**: Total demands, growth trends, regional breakdown
-- **Fungus Type Analysis**: Most requested varieties
-- **Temporal Patterns**: Demand variations by time period
-- **Geographic Distribution**: Demand concentration by region
-- **Circuit Performance**: Tracking of planned and completed circuits
-
-## API Routes
-
-### Authentication Endpoints
-
-- `POST /api/auth/register` - User registration
-- `POST /api/auth/login` - User login
-- `POST /api/auth/logout` - User logout
-- `GET /api/auth/session` - Get current session
-
-### Demand Endpoints
-
-- `GET /api/demands` - List all demands (with filters)
-- `GET /api/demands/:id` - Get single demand
-- `POST /api/demands` - Create new demand
-- `PATCH /api/demands/:id` - Update demand
-- `DELETE /api/demands/:id` - Delete demand
-- `GET /api/demands/map` - Get demand data for map visualization
-
-### Producer Endpoints
-
-- `GET /api/producers/:id` - Get producer profile
-- `PATCH /api/producers/:id` - Update producer profile
-- `GET /api/producers/:id/analytics` - Get producer analytics
-
-### Circuit Endpoints
-
-- `GET /api/circuits` - List producer's circuits
-- `POST /api/circuits` - Create new circuit
-- `GET /api/circuits/:id` - Get circuit details
-- `PATCH /api/circuits/:id` - Update circuit
-- `DELETE /api/circuits/:id` - Delete circuit
-
-## Authentication and Authorization
-
-Agariki uses Supabase Auth with the following configuration:
-
-- **Email/Password Authentication**: Primary method
-- **Social Providers**: Optional (Google, Facebook) for future enhancement
-- **JWT Tokens**: Secure, stateless authentication
-- **Role-Based Access**: Consumer, Producer, and Admin roles
-- **Row Level Security**: Database-level authorization
-- **Session Management**: Automatic token refresh
-
-**Middleware Protection:**
-
-Routes are protected using Next.js middleware that checks authentication status and user roles before allowing access to protected pages.
-
-## Deployment
-
-### Vercel Deployment
-
-1. **Connect Repository**: Link GitHub repo to Vercel
-2. **Configure Environment Variables**: Add all env vars from `.env.local`
-3. **Deploy**: Automatic deployment on push to main branch
-
-```bash
-# Manual deployment
-npm run build
-vercel --prod
-```
-
-### Supabase Setup
-
-1. **Create Project**: New project in Supabase dashboard
-2. **Run Migrations**: Execute SQL migrations in Supabase SQL editor
-3. **Configure Auth**: Set up auth providers and email templates
-4. **Set Environment Variables**: Copy credentials to Vercel
-
-## Development Guidelines
-
-### Code Style
-
-- Use TypeScript for all new code
-- Follow ESLint and Prettier configurations
-- Use functional components with hooks
-- Implement proper error handling
-- Write descriptive commit messages
-
-### Git Workflow
-
-- `main`: Production-ready code
-- `develop`: Development branch
-- Feature branches: `feature/feature-name`
-- Bug fixes: `fix/bug-description`
-
-```bash
-# Create feature branch
-git checkout -b feature/demand-filtering
-
-# Commit changes
-git commit -m "feat: add demand filtering by fungus type"
-
-# Push and create PR
-git push origin feature/demand-filtering
-```
-
-### Testing
-
-While comprehensive testing is a future enhancement, current best practices:
-
-- Manual testing of all user flows
-- Cross-browser testing (Chrome, Firefox, Safari)
-- Mobile responsiveness testing
-- API endpoint testing with Postman
+This repository contains the Agariki platform source code. To run the application locally:
+
+1. Clone the repository
+2. Install dependencies with your preferred package manager
+3. Configure environment variables for Supabase connection
+4. Run database migrations
+5. Start the development server
+
+Detailed setup instructions, environment configuration, and deployment guides are available in the project documentation for contributors.
 
 ## Contributing
 
-We welcome contributions to Agariki! To contribute:
+Agariki welcomes contributions from the community. Whether you're fixing bugs, adding features, improving documentation, or suggesting enhancements, your input is valuable.
 
+**How to Contribute**:
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Write clear commit messages
-5. Submit a pull request
-6. Ensure CI checks pass
+2. Create a feature branch from `develop`
+3. Make your changes with clear, descriptive commits
+4. Submit a pull request with a detailed description
 
-For major changes, please open an issue first to discuss proposed changes.
+**Contribution Guidelines**:
+- Follow TypeScript and React best practices
+- Maintain consistent code style (ESLint + Prettier)
+- Write clear commit messages using Conventional Commits format
+- Add tests for new features when applicable
+- Update documentation as needed
 
-## Roadmap
-
-### Phase 1 (Current)
-- ✅ Basic demand registration
-- ✅ Interactive demand map
-- ✅ Producer dashboard
-- ✅ Distribution circuit planning
-
-### Phase 2 (Next Quarter)
-- 🔄 SMS notifications for producers
-- 🔄 Advanced analytics and reporting
-- 🔄 Export functionality (PDF, CSV)
-- 🔄 Mobile-responsive optimization
-
-### Phase 3 (Future)
-- 📋 Route optimization algorithms
-- 📋 Multi-language support (French, English)
-- 📋 Producer-consumer messaging
-- 📋 Demand forecasting
-- 📋 Integration with payment systems (if scope expands)
+For major changes or new features, please open an issue first to discuss the proposed changes with maintainers.
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-## Contact and Support
-
-For questions, issues, or suggestions:
-
-- **Email**: support@agariki.cm
-- **GitHub Issues**: [github.com/yourusername/agariki/issues](https://github.com/yourusername/agariki/issues)
-- **Documentation**: [docs.agariki.cm](https://docs.agariki.cm)
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for complete details.
 
 ---
 
-**Built with ❤️ for Cameroon's fungus sector**
 
-*Agariki - Connecting demand with supply through information transparency*
+*Agariki - Connecting supply with demand through location intelligence and secure communication*
+
+**Academic Project**: Wide Area Networks Course | Cloud Computing Application
+
+For questions or support, please open an issue on GitHub.
