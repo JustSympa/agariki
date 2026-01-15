@@ -8,7 +8,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 
 The project is deployed in the link below
-https://agariki.vercel.com
+https://agariki.vercel.app
 
 For the demonstration follow the link below
 https://drive.google.com/file/d/1Hko3je7Q2u3cRAGs1cnA1l6viYvXGsl5/view?usp=sharing

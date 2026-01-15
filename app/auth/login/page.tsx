@@ -14,6 +14,7 @@ import { LogIn, Loader2, Sparkles, Mail, Lock, Eye, EyeOff } from 'lucide-react'
 export default function LoginPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const _error = searchParams.get("error");
   const redirectedFrom = searchParams.get('redirectedFrom')
   
   const [email, setEmail] = useState('')
@@ -87,10 +88,11 @@ export default function LoginPage() {
 
   return (
     <Card className="border-2 border-brand/30 shadow-2xl hover-lift">
+      {_error && <p className="text-red-500">{_error}</p>}
       <CardHeader className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="text-3xl font-bold bg-gradient-to-r from-brand to-orange-600 bg-clip-text text-transparent">
+            <CardTitle className="text-3xl font-bold bg-linear-to-r from-brand to-orange-600 bg-clip-text text-transparent">
               Welcome Back
             </CardTitle>
             <CardDescription className="text-gray-600 mt-2">
@@ -179,7 +181,7 @@ export default function LoginPage() {
 
           <Button 
             type="submit" 
-            className="w-full h-12 text-base font-semibold bg-gradient-to-r from-brand to-orange-600 hover:from-brand/90 hover:to-orange-600/90 shadow-lg hover:shadow-xl transition-all duration-300"
+            className="w-full h-12 text-base font-semibold bg-linear-to-r from-brand to-orange-600 hover:from-brand/90 hover:to-orange-600/90 shadow-lg hover:shadow-xl transition-all duration-300"
             disabled={loading}
           >
             {loading ? (
