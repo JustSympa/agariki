@@ -7,11 +7,15 @@
 [![Supabase](https://img.shields.io/badge/Supabase-Backend-green?style=flat-square&logo=supabase)](https://supabase.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 
-The project is deployed in the link below
-https://agariki.vercel.app
+The project is deployed in the link below  
+[Agariki](https://agariki.vercel.app)
 
-For the demonstration follow the link below
-https://drive.google.com/file/d/1Hko3je7Q2u3cRAGs1cnA1l6viYvXGsl5/view?usp=sharing
+For the Presentation follow the link below  
+[Video 1 - 9 min](https://drive.google.com/file/d/1Hko3je7Q2u3cRAGs1cnA1l6viYvXGsl5/view?usp=sharing)
+
+For the Cloud presentation follow the link below  
+[Video 2 - 2 min](https://drive.google.com/file/d/17oOvat3j04XBzkdXfUMV2rnqJJycSG2y/view?usp=sharing)
+
 
 ## Table of Contents
 
@@ -389,5 +393,6 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 *Agariki - Connecting supply with demand through location intelligence and secure communication*
 
 **Academic Project**: Wide Area Networks Course | Cloud Computing Application
+
 
 For questions or support, please open an issue on GitHub.
