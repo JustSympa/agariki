@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Loader2, UserPlus, Sparkles, User, Mail, Lock, Eye, EyeOff, BadgeCheck, Store, ShoppingCart } from 'lucide-react'
+import { users } from '@/src/api'
 
 export default function SignupPage() {
   const router = useRouter()
@@ -73,20 +74,12 @@ export default function SignupPage() {
       if (authError) throw authError
 
       if (authData.user) {
-        const { error: profileError } = await supabase
-          .from('users')
-          .insert([
-            {
-              id: authData.user.id,
-              user_type: parseInt(formData.userType),
-              full_name: formData.fullName,
-              email: formData.email,
-            },
-          ])
-
-        if (profileError) {
-          console.error('Profile creation error:', profileError)
-        }
+        await users.new({
+          id: authData.user.id,
+          userType: parseInt(formData.userType),
+          fullName: formData.fullName,
+          email: formData.email,
+        })
 
         setSuccess(true)
         

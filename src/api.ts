@@ -1,8 +1,9 @@
 import axios from 'axios'
-import { User, Conversation, Message } from '@/lib/db/schema'
+import { NewUser, User, Conversation, Message } from '@/lib/db/schema'
 
 const routes = {
     users: {
+        new: '/api/user/new',
         read: '/api/user/read',
         search: '/api/user/search',
         update: '/api/user/update',
@@ -37,6 +38,9 @@ async function api_fetch(route: string, method: 'POST' | 'GET' | 'PUT', body: an
 }
 
 export const users = {
+    new: async function(user: NewUser) {
+        return await api_fetch(routes.users.new, 'POST', user) as User
+    },
     read: async function(id: string) {
         return await api_fetch(routes.users.read, 'GET', { id }) as User
     },
