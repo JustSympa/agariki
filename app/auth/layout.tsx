@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { ReactNode } from 'react'
+import { ReactNode, Suspense } from 'react'
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
   return (
@@ -49,7 +49,13 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
             </span>
         </Link>
         <div className='w-full'>
+          <Suspense fallback={<Image src="/logo.svg" 
+              alt="Agariki Logo" 
+              width={100} 
+              height={100}
+              className="transition-opacity animate-pulse duration-300" />}>
           {children}
+          </Suspense>
         </div>
       </div>
     </main>

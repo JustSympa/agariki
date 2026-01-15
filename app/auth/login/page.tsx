@@ -14,7 +14,6 @@ import { LogIn, Loader2, Sparkles, Mail, Lock, Eye, EyeOff } from 'lucide-react'
 export default function LoginPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const _error = searchParams.get("error");
   const redirectedFrom = searchParams.get('redirectedFrom')
   
   const [email, setEmail] = useState('')
@@ -88,7 +87,6 @@ export default function LoginPage() {
 
   return (
     <Card className="border-2 border-brand/30 shadow-2xl hover-lift">
-      {_error && <p className="text-red-500">{_error}</p>}
       <CardHeader className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
