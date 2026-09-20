@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { createClient } from '@/lib/supabase/client'
-import { PointOfActivity } from '@/lib/db/schema'
+import { PointOfActivity } from '@/db/schema'
 
 interface PoaState {
   points: PointOfActivity[]

@@ -11,7 +11,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Loader2, UserPlus, Sparkles, User, Mail, Lock, Eye, EyeOff, BadgeCheck, Store, ShoppingCart } from 'lucide-react'
-import { users } from '@/src/api'
+import { users } from '@/lib/api'
 
 export default function SignupPage() {
   const router = useRouter()

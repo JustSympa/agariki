@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import { createClient } from '@/lib/supabase/client'
-import { User } from '@/lib/db/schema'
-import * as api from '@/src/api'
+import { User } from '@/db/schema'
+import * as api from '@/lib/api'
 
 interface AuthState {
   user: User | null

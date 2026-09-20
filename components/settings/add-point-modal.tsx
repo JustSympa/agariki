@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { X, Loader2, MapPin } from 'lucide-react'
-import { USER_TYPES, POA_TYPES } from '@/lib/db/schema'
+import { USER_TYPES, POA_TYPES } from '@/db/schema'
 
 interface AddPointModalProps {
   isOpen: boolean

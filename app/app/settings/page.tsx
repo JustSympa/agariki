@@ -31,7 +31,7 @@ import {
   deletePoint 
 } from '@/lib/store/slices/poaSlice'
 import { AppDispatch, RootState } from '@/lib/store'
-import { POA_TYPES, USER_TYPES } from '@/lib/db/schema'
+import { POA_TYPES, USER_TYPES } from '@/db/schema'
 
 // Add Point Modal Component
 import { AddPointModal } from '@/components/settings/add-point-modal'

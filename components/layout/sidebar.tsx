@@ -21,7 +21,7 @@ import { Button } from '@/components/ui/button'
 import { createClient } from '@/lib/supabase/client'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/lib/store'
-import { USER_TYPES } from '@/lib/db/schema'
+import { USER_TYPES } from '@/db/schema'
 
 const navigation = [
   { name: 'Map', href: '/app/map', icon: Map, current: true },

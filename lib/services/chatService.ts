@@ -1,5 +1,5 @@
-import * as api from '@/src/api'
-import { User as ChatUser } from '@/lib/db/schema'
+import * as api from '@/lib/api'
+import { User as ChatUser } from '@/db/schema'
 
 // export interface ChatUser {
 //   id: string

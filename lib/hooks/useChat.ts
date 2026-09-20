@@ -11,7 +11,7 @@ import {
   clearCurrentConversation,
   setCurrentConversation,
 } from '@/lib/store/slices/chatSlice'
-import { User as ChatUser } from '@/lib/db/schema'
+import { User as ChatUser } from '@/db/schema'
 import { chatService } from '@/lib/services/chatService'
 
 export const useChat = () => {

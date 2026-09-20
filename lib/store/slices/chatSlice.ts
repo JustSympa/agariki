@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import * as api from '@/src/api'
-import { User } from '@/lib/db/schema'
+import * as api from '@/lib/api'
+import { User } from '@/db/schema'
 
 export interface Conversation {
   id: string

@@ -3,7 +3,7 @@
 import { format } from 'date-fns'
 import { Check, CheckCheck } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { USER_TYPES } from '@/lib/db/schema'
+import { USER_TYPES } from '@/db/schema'
 
 interface ChatMessageProps {
   message: {

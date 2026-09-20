@@ -4,7 +4,7 @@ import { useCallback } from 'react'
 import { format } from 'date-fns'
 import { CheckCheck } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { USER_TYPES } from '@/lib/db/schema'
+import { USER_TYPES } from '@/db/schema'
 
 interface ChatListItemProps {
   conversation: {
